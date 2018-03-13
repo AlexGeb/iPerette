@@ -1,0 +1,9 @@
+.confirm-modal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
