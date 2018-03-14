@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
+import moment from 'moment';
 
 export const Bookings = new Mongo.Collection('bookings');
 
@@ -13,9 +14,10 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'bookings.insert'({ start, end }) {
+  'bookings.insert'({ start, end, nbOfGuest }) {
     check(start, Date);
     check(end, Date);
+    check(nbOfGuest, Number);
 
     // Make sure the user is logged in before inserting a task
     if (!this.userId) {
@@ -23,13 +25,28 @@ Meteor.methods({
     }
     const user = Meteor.users.findOne(this.userId);
     Bookings.insert({
-      start,
-      end,
-      createdAt: new Date(),
+      start: moment(start).format('DD/MM/YYYY'),
+      end: moment(end).format('DD/MM/YYYY'),
+      nbOfGuest,
+      createdAt: moment().format(),
       booker: this.userId,
       color: user.color,
       emails: user.emails,
       name: `${user.firstname} ${user.lastname}`
     });
+  },
+  'bookings.cancel'(bookingId) {
+    check(bookingId, String);
+    const booking = Bookings.findOne(bookingId);
+    const isAdmin = Roles.userIsInRole(
+      this.userId,
+      ['admin'],
+      Roles.GLOBAL_GROUP
+    );
+    if (!isAdmin && booking.booker !== this.userId) {
+      // If the task is private, make sure only the owner can delete it
+      throw new Meteor.Error('not-authorized');
+    }
+    Bookings.remove(bookingId);
   }
 });

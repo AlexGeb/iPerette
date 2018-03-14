@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { Calendar as Cal, CalendarControls } from 'react-yearly-calendar';
 import { withTracker } from 'meteor/react-meteor-data';
 import moment from 'moment';
-import 'moment/locale/fr';
 import './calendrier.css';
 import { Bookings } from '../../../api/bookings';
 
 class Calendrier extends Component {
   constructor() {
     super();
-    moment().locale('fr');
     const today = moment();
     this.state = {
       year: today.year(),
@@ -53,7 +51,7 @@ class Calendrier extends Component {
 
   getBookingFromDate = date => {
     return this.props.bookings.find(b =>
-      date.isBetween(b.start, b.end, null, '[]')
+      date.isBetween(b.start, b.end, 'day', '[]')
     );
   };
 
@@ -88,6 +86,15 @@ class Calendrier extends Component {
 export default withTracker(() => {
   Meteor.subscribe('bookings');
   return {
-    bookings: Bookings.find({}, { sort: { createdAt: -1 } }).fetch()
+    bookings: Bookings.find(
+      {},
+      { fields: { start: 1, end: 1, booker: 1, name: 1, color: 1 } }
+    )
+      .fetch()
+      .map(b => {
+        b.start = moment(b.start, 'DD/MM/YYYY');
+        b.end = moment(b.end, 'DD/MM/YYYY');
+        return b;
+      })
   };
 })(Calendrier);

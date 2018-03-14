@@ -93,7 +93,7 @@ class Login extends React.Component {
                   autoComplete="current-password"
                 />
                 <Form.Button content="Submit" />
-                <Message error header="Action Forbidden" content={errorMsg} />
+                <Message error header="Erreur" content={errorMsg} />
               </Segment>
             </Form>
           </Grid.Column>
