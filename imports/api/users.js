@@ -9,6 +9,8 @@ if (Meteor.isServer) {
       Roles.GLOBAL_GROUP
     );
     const query = isAdmin ? {} : { _id: this.userId };
-    return Meteor.users.find(query, { fields: { lastname: 1, firstname: 1 } });
+    return Meteor.users.find(query, {
+      fields: { lastname: 1, firstname: 1, emails: 1 }
+    });
   });
 }

@@ -54,7 +54,6 @@ export default class SelectDateRange extends Component {
       to = undefined;
     }
     const modifiers = { start: from, end: to };
-    console.log('select re-rendered');
     return (
       <div className="InputFromTo">
         <DayPickerInput

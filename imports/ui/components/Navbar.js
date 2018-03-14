@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Menu, Header } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
+import { Roles } from 'meteor/alanning:roles';
+import { Meteor } from 'meteor/meteor';
 
 class Navbar extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class Navbar extends Component {
 
   render() {
     const { activeItem } = this.state;
-    const { match, onLogout } = this.props;
+    const { match, onLogout, isAdmin } = this.props;
     const { firstname, lastname } = this.props.currentUser;
     return (
       <Menu>
@@ -40,6 +42,17 @@ class Navbar extends Component {
         >
           Réservation
         </Menu.Item>
+        {isAdmin && (
+          <Menu.Item
+            as={Link}
+            name="utilisateurs"
+            active={activeItem === 'utilisateurs'}
+            onClick={this.handleItemClick}
+            to={`${match.url}/utilisateurs`}
+          >
+            Utilisateurs
+          </Menu.Item>
+        )}
         <Menu.Menu position="right">
           <Menu.Item>
             <Header as="h4">
@@ -57,7 +70,13 @@ class Navbar extends Component {
 
 export default withTracker(() => {
   Meteor.subscribe('users');
+  const isAdmin = Roles.userIsInRole(
+    Meteor.userId(),
+    ['admin'],
+    Roles.GLOBAL_GROUP
+  );
   return {
+    isAdmin,
     currentUser: Meteor.user()
   };
 })(Navbar);

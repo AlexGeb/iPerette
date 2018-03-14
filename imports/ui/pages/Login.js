@@ -17,13 +17,11 @@ class Login extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log('submit : ', this.state);
     const { email, password } = this.state;
     this.setState({ isLoading: true });
     Meteor.loginWithPassword(email, password, err => {
       this.setState({ isLoading: false });
       if (err) {
-        console.log('err loging in', err);
         this.setState({ displayLoginError: true, errorMsg: err.reason });
       } else {
         this.props.history.push('/');

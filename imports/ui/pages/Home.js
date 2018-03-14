@@ -1,11 +1,32 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { Meteor } from 'meteor/meteor';
 import Navbar from '../components/Navbar';
 import { Container } from 'semantic-ui-react';
 import Calendrier from './home/Calendrier';
 import Reservation from './home/Reservation';
+import Utilisateurs from './home/Utilisateurs';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Roles } from 'meteor/alanning:roles';
+import { Meteor } from 'meteor/meteor';
 import { Bookings } from '../../api/bookings';
+
+const AdminRoute = ({ isAdmin, component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props => {
+      return isAdmin ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: '/home',
+            state: { from: props.location }
+          }}
+        />
+      );
+    }}
+  />
+);
 
 class Home extends Component {
   constructor(props) {
@@ -34,13 +55,12 @@ class Home extends Component {
         <Navbar match={match} location={location} onLogout={this.logout} />
         <Container>
           <Switch>
-            <Route
-              path={`${match.url}/calendrier`}
-              render={() => <Calendrier />}
-            />
-            <Route
-              path={`${match.url}/reservation`}
-              render={() => <Reservation />}
+            <Route path={`${match.url}/calendrier`} component={Calendrier} />
+            <Route path={`${match.url}/reservation`} component={Reservation} />
+            <AdminRoute
+              isAdmin={this.props.isAdmin}
+              path={`${match.url}/utilisateurs`}
+              component={Utilisateurs}
             />
             <Redirect to={`${match.url}/calendrier`} />
           </Switch>
@@ -49,4 +69,13 @@ class Home extends Component {
     );
   }
 }
-export default Home;
+export default withTracker(() => {
+  const isAdmin = Roles.userIsInRole(
+    Meteor.userId(),
+    ['admin'],
+    Roles.GLOBAL_GROUP
+  );
+  return {
+    isAdmin
+  };
+})(Home);

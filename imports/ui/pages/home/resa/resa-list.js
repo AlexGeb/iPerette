@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
+import { Roles } from 'meteor/alanning:roles';
+import { Meteor } from 'meteor/meteor';
 import { Table, Header, Button, Confirm } from 'semantic-ui-react';
 import { Bookings } from '../../../../api/bookings';
 import moment from 'moment';
 import './resa-list.css';
-import { Roles } from 'meteor/alanning:roles';
-import { Meteor } from 'meteor/meteor';
 
 class ReservationList extends Component {
   state = { open: false, bookingId: null };

@@ -37,7 +37,6 @@ class ReservationForm extends Component {
       'Les dates sont déjà prises, référez-vous au calendrier';
     const booking = this.bookingOverlaped({ from, to });
     if (booking) {
-      console.log('overlaped booking : ', booking);
       this.addErrorMsg(errorString);
     } else {
       this.removeErrorMsg(errorString);
@@ -76,7 +75,6 @@ class ReservationForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     let { from, to, nbOfGuest } = this.state;
-    console.log('submitted : ', from, to);
     start = moment(from).toDate();
     end = moment(to).toDate();
     Meteor.call('bookings.insert', {

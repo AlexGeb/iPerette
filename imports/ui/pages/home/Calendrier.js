@@ -58,7 +58,6 @@ class Calendrier extends Component {
   render() {
     const { year, selectedDay } = this.state;
     const { styles, customClasses } = this.renderStyles();
-    console.log('re-rendering calendrier', this.props.bookings);
     return (
       <div id="calendar">
         <style>{styles}</style>
