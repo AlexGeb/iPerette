@@ -17,21 +17,27 @@ class ReservationForm extends Component {
       errorMsg: []
     };
   }
-  areUnvalidDates = ({ from, to }) => {
-    return this.props.bookings.some(b => {
-      console.log(moment(b.start).isBetween(from, to, 'day', '()'));
-      return (
+  bookingOverlaped = ({ from, to }) => {
+    let booking = undefined;
+    this.props.bookings.some(b => {
+      const unvalid =
         b.start.isBetween(from, to, 'day', '[]') ||
-        b.end.isBetween(from, to, 'day', '[]')
-      );
+        b.end.isBetween(from, to, 'day', '[]');
+      if (unvalid) {
+        booking = b;
+      }
+      return unvalid;
     });
+    return booking;
   };
 
   handleRangeChange = ({ from, to }) => {
     this.setState({ from, to });
     const errorString =
       'Les dates sont déjà prises, référez-vous au calendrier';
-    if (this.areUnvalidDates({ from, to })) {
+    const booking = this.bookingOverlaped({ from, to });
+    if (booking) {
+      console.log('overlaped booking : ', booking);
       this.addErrorMsg(errorString);
     } else {
       this.removeErrorMsg(errorString);
@@ -88,6 +94,10 @@ class ReservationForm extends Component {
       <div>
         <Header as="h1">Nouvelle réservation</Header>
         <Form onSubmit={this.handleSubmit} error={displayError}>
+          <Message error>
+            <Message.Header>Attention</Message.Header>
+            <Message.List items={errorMsg} />
+          </Message>
           <Form.Field required>
             <label>Dates du séjour</label>
             <SelectDateRange
@@ -106,10 +116,6 @@ class ReservationForm extends Component {
               onChange={this.handleNbOfGuestChange}
             />
           </Form.Field>
-          <Message error>
-            <Message.Header>Attention</Message.Header>
-            <Message.List items={errorMsg} />
-          </Message>
           <Form.Button disabled={disabled} content="Réserver" />
         </Form>
       </div>

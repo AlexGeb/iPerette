@@ -43,7 +43,9 @@ class ReservationList extends Component {
     const { isAdmin } = this.props;
     return (
       <div>
-        <Header as="h1">Gestion des réservations</Header>
+        <Header as="h1">
+          {isAdmin ? 'Gestion des réservations' : 'Mes réservations'}
+        </Header>
         <Table celled>
           <Table.Header>
             <Table.Row>
