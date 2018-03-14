@@ -56,8 +56,8 @@ class ReservationList extends Component {
           <Confirm
             className="confirm-modal"
             open={this.state.open}
-            cancelButton="Never mind"
-            confirmButton="Let's do it"
+            cancelButton="Finalement, non."
+            confirmButton="Allé j'annule la résa"
             onCancel={this.handleCancel}
             onConfirm={this.handleConfirm}
           />
