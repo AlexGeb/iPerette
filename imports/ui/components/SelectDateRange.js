@@ -67,7 +67,7 @@ export default class SelectDateRange extends Component {
           parseDate={parseDate}
           dayPickerProps={{
             selectedDays: [from, { from, to }],
-            disabledDays: { after: to },
+            disabledDays: [{ before: new Date() }, { after: to }],
             toMonth: to,
             modifiers,
             numberOfMonths: 2,
