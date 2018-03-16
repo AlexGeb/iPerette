@@ -20,7 +20,7 @@ class Navbar extends Component {
 
   render() {
     const { activeItem } = this.state;
-    const { match, onLogout, isAdmin } = this.props;
+    const { match, onLogout, isAdmin, connected } = this.props;
     const { firstname, lastname } = this.props.currentUser;
     return (
       <Menu>
@@ -53,6 +53,7 @@ class Navbar extends Component {
             Utilisateurs
           </Menu.Item>
         )}
+        <Menu.Item>{connected ? 'en ligne' : 'hors ligne'}</Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item>
             <Header as="h4">
@@ -77,6 +78,7 @@ export default withTracker(() => {
   );
   return {
     isAdmin,
+    connected: Meteor.status().connected,
     currentUser: Meteor.user()
   };
 })(Navbar);

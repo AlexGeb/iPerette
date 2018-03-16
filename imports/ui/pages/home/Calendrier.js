@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
-
-import { Calendar as Cal, CalendarControls, Day } from 'react-yearly-calendar';
+import {
+  Calendar as Cal,
+  CalendarControls,
+  Day
+} from '../../components/calendar';
 import { withTracker } from 'meteor/react-meteor-data';
 import moment from 'moment';
 import './calendrier.css';
 import { Bookings } from '../../../api/bookings';
+import { Portal, Segment, Header } from 'semantic-ui-react';
+import pluralize from 'pluralize';
 
 class Calendrier extends Component {
   constructor() {
@@ -44,14 +49,14 @@ class Calendrier extends Component {
     });
     return { styles, customClasses };
   };
-  onDayClicked = (day, classes) => {
+  onDayClicked = (day, classes, dayElementClicked) => {
     if (classes && classes.indexOf('booking') !== -1) {
-      console.log('booking clicked', day, classes);
-      console.log(this.getBookingFromDate(day));
+      const clickedBooking = this.getBookingFromDate(day);
+      this.setState({ dayElementClicked, openPortal: true, clickedBooking });
     }
-    const el = findDOMNode(Day);
-    console.log('element,', el);
   };
+
+  handleClose = () => this.setState({ openPortal: false });
 
   getBookingFromDate = date => {
     return this.props.bookings.find(b =>
@@ -60,8 +65,24 @@ class Calendrier extends Component {
   };
 
   render() {
-    const { year, selectedDay } = this.state;
+    const {
+      year,
+      selectedDay,
+      openPortal,
+      dayElementClicked,
+      clickedBooking
+    } = this.state;
     const { styles, customClasses } = this.renderStyles();
+    let portalStyles = {};
+    if (dayElementClicked) {
+      const { top, left, height } = dayElementClicked.getBoundingClientRect();
+      portalStyles = {
+        top: top + height,
+        left,
+        position: 'absolute',
+        zIndex: 1000
+      };
+    }
     return (
       <div id="calendar">
         <style>{styles}</style>
@@ -81,6 +102,21 @@ class Calendrier extends Component {
           customClasses={customClasses}
           onPickDate={this.onDayClicked}
         />
+        {clickedBooking && (
+          <Portal open={openPortal} onClose={this.handleClose}>
+            <Segment style={portalStyles}>
+              <Header>{clickedBooking.name}</Header>
+              <p>
+                Du {clickedBooking.start.format('DD/MM/YYYY')} au{' '}
+                {clickedBooking.end.format('DD/MM/YYYY')} ({pluralize(
+                  'jour',
+                  clickedBooking.end.diff(clickedBooking.start, 'days'),
+                  true
+                )})
+              </p>
+            </Segment>
+          </Portal>
+        )}
       </div>
     );
   }

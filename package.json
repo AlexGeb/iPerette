@@ -2,14 +2,14 @@
   "name": "iperette-meteor",
   "private": true,
   "scripts": {
-    "start":
-      "MAIL_URL='smtp://postmaster%40sandbox9ed1c58ec2a04dc180ae4ead677b574f.mailgun.org:802c6f9d701ad3162bfe42129ca51a56@smtp.mailgun.org:587' MONGO_URL='mongodb://localhost:27017/meteorDb' meteor"
+    "start": "MAIL_URL='smtp://postmaster%40sandbox9ed1c58ec2a04dc180ae4ead677b574f.mailgun.org:802c6f9d701ad3162bfe42129ca51a56@smtp.mailgun.org:587' MONGO_URL='mongodb://localhost:27017/meteorDb' meteor"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.36",
     "bcrypt": "^1.0.3",
     "meteor-node-stubs": "^0.3.2",
     "moment": "^2.21.0",
+    "pluralize": "^7.0.0",
     "react": "^16.2.0",
     "react-day-picker": "^7.1.4",
     "react-dom": "^16.2.0",
