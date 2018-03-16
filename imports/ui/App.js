@@ -7,9 +7,11 @@ import {
 } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 
-import Login from './pages/Login.js';
-import Home from './pages/Home.js';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import Enroll from './pages/Enroll';
 import { Loader } from 'semantic-ui-react';
 
 const PrivateRoute = ({
@@ -39,6 +41,12 @@ const PrivateRoute = ({
 );
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    Accounts.onEnrollmentLink((token, done) => {
+      console.log('clicked enrollment link ', token, done);
+    });
+  }
   render() {
     const privateRouteProps = this.props;
     return (
@@ -46,6 +54,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/login" component={Login} />
           <PrivateRoute path="/home" component={Home} {...privateRouteProps} />
+          <Route path="/enroll-account/:token" component={Enroll} />
           <Redirect to="/home" />
         </Switch>
       </Router>

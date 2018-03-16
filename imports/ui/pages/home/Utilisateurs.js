@@ -1,33 +1,21 @@
 import React, { Component } from 'react';
-import { Header } from 'semantic-ui-react';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Roles } from 'meteor/alanning:roles';
-import { Meteor } from 'meteor/meteor';
+import { Grid } from 'semantic-ui-react';
+import UserForm from './users/user-form';
+import UsersList from './users/users-list';
 
 class Utilisateurs extends Component {
   render() {
     return (
-      <div>
-        <Header as="h1" content="Gestion des utilisateurs" />
-        {this.props.users.map((u, i) => (
-          <h4 key={i}>
-            {u.firstname} {u.lastname}
-          </h4>
-        ))}
-      </div>
+      <Grid stackable columns={2} relaxed divided>
+        <Grid.Column width={6}>
+          <UserForm />
+        </Grid.Column>
+        <Grid.Column width={10}>
+          <UsersList />
+        </Grid.Column>
+      </Grid>
     );
   }
 }
 
-export default withTracker(() => {
-  Meteor.subscribe('users');
-  const isAdmin = Roles.userIsInRole(
-    Meteor.userId(),
-    ['admin'],
-    Roles.GLOBAL_GROUP
-  );
-  return {
-    isAdmin,
-    users: Meteor.users.find({ _id: { $ne: Meteor.userId() } }).fetch()
-  };
-})(Utilisateurs);
+export default Utilisateurs;

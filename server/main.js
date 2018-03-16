@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
+import { Email } from 'meteor/email';
 import '../imports/api/bookings.js';
 import '../imports/api/users.js';
+import '../imports/startup/server';
 
 Accounts.onCreateUser((options, user) => {
   const letters = 'ABCDE'.split('');
@@ -17,9 +19,9 @@ Accounts.onCreateUser((options, user) => {
 Meteor.startup(() => {
   // code to run on server at startup
   const user1 = {
-    email: 'al.be@mail.fr',
+    email: 'alex.behaghel@gmail.com',
     firstname: 'Alexandre',
-    lastname: 'Beg',
+    lastname: 'Behaghel',
     password: 'password'
   };
   const user2 = {
@@ -28,8 +30,10 @@ Meteor.startup(() => {
     lastname: 'Doe',
     password: 'password'
   };
-  addUser(user1, { role: 'admin' });
+  const alexId = addUser(user1, { role: 'admin' });
   addUser(user2, { role: 'user' });
+
+  //Accounts.sendEnrollmentEmail(alexId);
 });
 
 const addUser = ({ email, firstname, lastname, password }, { role }) => {
@@ -47,4 +51,5 @@ const addUser = ({ email, firstname, lastname, password }, { role }) => {
     }
   });
   Roles.addUsersToRoles(userId, role, Roles.GLOBAL_GROUP);
+  return userId;
 };

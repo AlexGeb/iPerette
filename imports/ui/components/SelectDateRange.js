@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import MomentLocaleUtils, {
   formatDate,
   parseDate
 } from 'react-day-picker/moment';
+import moment from 'moment';
 import 'moment/locale/fr';
 
 export default class SelectDateRange extends Component {

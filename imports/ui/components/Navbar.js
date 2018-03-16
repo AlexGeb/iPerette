@@ -9,8 +9,8 @@ class Navbar extends Component {
   constructor(props) {
     super(props);
     const { pathname } = this.props.location;
-    const activeItem =
-      pathname.indexOf('reservation') < 0 ? 'calendrier' : 'reservation';
+    const possiblePath = ['reservation', 'calendrier', 'utilisateurs'];
+    const activeItem = possiblePath.find(p => pathname.includes(p));
     this.state = {
       isOpen: false,
       activeItem

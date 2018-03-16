@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Calendar as Cal, CalendarControls } from 'react-yearly-calendar';
+import { findDOMNode } from 'react-dom';
+
+import { Calendar as Cal, CalendarControls, Day } from 'react-yearly-calendar';
 import { withTracker } from 'meteor/react-meteor-data';
 import moment from 'moment';
 import './calendrier.css';
@@ -47,6 +49,8 @@ class Calendrier extends Component {
       console.log('booking clicked', day, classes);
       console.log(this.getBookingFromDate(day));
     }
+    const el = findDOMNode(Day);
+    console.log('element,', el);
   };
 
   getBookingFromDate = date => {

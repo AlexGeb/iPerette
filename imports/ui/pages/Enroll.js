@@ -3,48 +3,40 @@ import { Form, Segment, Message, Grid, Header } from 'semantic-ui-react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-class Login extends React.Component {
+class Enroll extends React.Component {
   constructor(props) {
     super(props);
+    this.token = this.props.match.params.token;
+    Meteor.logout();
     this.state = {
-      email: '',
-      password: '',
-      displayLoginError: false,
-      isLoading: false,
-      errorMsg: null
+      password: ''
     };
   }
 
   handleSubmit = event => {
     event.preventDefault();
-    const { email, password } = this.state;
-    this.setState({ isLoading: true });
-    Meteor.loginWithPassword(email, password, err => {
-      this.setState({ isLoading: false });
+    console.log('submitted password');
+    Accounts.resetPassword(this.token, this.state.password, err => {
       if (err) {
-        this.setState({ displayLoginError: true, errorMsg: err.reason });
+        console.log('error', err.reason);
       } else {
-        this.props.history.push('/');
+        console.log('ok enroll');
       }
+      this.props.history.push('/login');
     });
   };
 
   handleChange = event => {
-    const { name, value } = event.target;
+    const target = event.target;
+    const name = target.name;
     this.setState({
-      [name]: value
+      [name]: target.value
     });
   };
 
   render() {
     const { from } = this.props.location.state || { from: { pathname: '/' } };
-    const {
-      displayLoginError,
-      errorMsg,
-      email,
-      password,
-      isLoading
-    } = this.state;
+    const { password } = this.state;
     return (
       <div className="login-form">
         <style>{`
@@ -59,27 +51,13 @@ class Login extends React.Component {
           style={{ height: '100%' }}
           verticalAlign="middle"
         >
+          {' '}
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as="h2" color="teal" textAlign="center">
-              Connexion
+              Activez votre compte en définissant un nouveau mot de passe
             </Header>
-            <Form
-              size="large"
-              noValidate
-              onSubmit={this.handleSubmit}
-              error={displayLoginError}
-              loading={isLoading}
-            >
+            <Form size="large" noValidate onSubmit={this.handleSubmit}>
               <Segment raised>
-                <Form.Input
-                  label="Email"
-                  name="email"
-                  type="email"
-                  placeholder="adresse-mail@gogol.cool"
-                  value={email}
-                  onChange={this.handleChange}
-                  autoComplete="email"
-                />
                 <Form.Input
                   label="Mot de passe"
                   name="password"
@@ -90,7 +68,6 @@ class Login extends React.Component {
                   autoComplete="current-password"
                 />
                 <Form.Button content="Submit" />
-                <Message error header="Erreur" content={errorMsg} />
               </Segment>
             </Form>
           </Grid.Column>
@@ -100,4 +77,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default Enroll;
