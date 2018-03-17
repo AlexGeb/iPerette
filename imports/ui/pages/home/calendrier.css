@@ -3,7 +3,7 @@ div#calendar {
   border-radius: 5px;
   border: 1px solid #5a5a5a;
   background-color: white;
-  overflow: hidden;
+  overflow: auto;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -118,7 +118,7 @@ table.calendar td.weekend {
 }
 
 /*mobile*/
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 400px) {
   table.calendar {
     width: 100%;
     min-width: 235px;

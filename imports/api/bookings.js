@@ -18,8 +18,8 @@ bookingOverlaped = ({ from, to }) => {
     .fetch()
     .some(b => {
       const unvalid =
-        b.start.isBetween(from, to, 'day', '[]') ||
-        b.end.isBetween(from, to, 'day', '[]');
+        moment(b.start, 'DD/MM/YYYY').isBetween(from, to, 'day', '[]') ||
+        moment(b.end, 'DD/MM/YYYY').isBetween(from, to, 'day', '[]');
       if (unvalid) {
         booking = b;
       }
