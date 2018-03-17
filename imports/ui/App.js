@@ -52,9 +52,18 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/login" component={Login} />
-          <PrivateRoute path="/home" component={Home} {...privateRouteProps} />
-          <Route path="/enroll-account/:token" component={Enroll} />
+          <Route exact name="login" path="/login" component={Login} />
+          <PrivateRoute
+            name="home"
+            path="/home"
+            component={Home}
+            {...privateRouteProps}
+          />
+          <Route
+            name="enroll"
+            path="/enroll-account/:token"
+            component={Enroll}
+          />
           <Redirect to="/home" />
         </Switch>
       </Router>
