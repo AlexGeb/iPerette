@@ -51,7 +51,6 @@ class Calendrier extends Component {
   };
   onDayClicked = (day, classes, dayElementClicked) => {
     if (classes && classes.indexOf('booking') !== -1) {
-      console.log('entered on booking element', day.format('DD/MM'));
       const clickedBooking = this.getBookingFromDate(day);
       this.setState({
         dayElementClicked,
@@ -61,7 +60,6 @@ class Calendrier extends Component {
       });
       dayElementClicked.onmouseleave = () => {
         if (day.isSame(this.state.day)) {
-          console.log('leaving booking element', day.format('DD/MM'));
           this.handleClose();
         }
       };
