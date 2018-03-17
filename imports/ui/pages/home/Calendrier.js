@@ -51,8 +51,20 @@ class Calendrier extends Component {
   };
   onDayClicked = (day, classes, dayElementClicked) => {
     if (classes && classes.indexOf('booking') !== -1) {
+      console.log('entered on booking element', day.format('DD/MM'));
       const clickedBooking = this.getBookingFromDate(day);
-      this.setState({ dayElementClicked, openPortal: true, clickedBooking });
+      this.setState({
+        dayElementClicked,
+        openPortal: true,
+        clickedBooking,
+        day
+      });
+      dayElementClicked.onmouseleave = () => {
+        if (day.isSame(this.state.day)) {
+          console.log('leaving booking element', day.format('DD/MM'));
+          this.handleClose();
+        }
+      };
     }
   };
 
@@ -83,6 +95,18 @@ class Calendrier extends Component {
         zIndex: 1000
       };
     }
+    const events = [
+      {
+        start: moment('20180607', 'YYYYMMDD'),
+        end: moment('20180617', 'YYYYMMDD'),
+        classe: 'event1'
+      },
+      {
+        start: moment('20180625', 'YYYYMMDD'),
+        end: moment('20180707', 'YYYYMMDD'),
+        classe: 'event2'
+      }
+    ];
     return (
       <div id="calendar">
         <style>{styles}</style>
@@ -95,12 +119,13 @@ class Calendrier extends Component {
         />
         <Cal
           year={year}
-          forceFullWeeks={true}
+          forceFullWeeks={false}
           firstDayOfWeek={0}
           selectedDay={selectedDay}
           showWeekSeparators={true}
           customClasses={customClasses}
           onPickDate={this.onDayClicked}
+          onHoveredDate={this.onDayClicked}
         />
         {clickedBooking && (
           <Portal open={openPortal} onClose={this.handleClose}>
@@ -110,7 +135,7 @@ class Calendrier extends Component {
                 Du {clickedBooking.start.format('DD/MM/YYYY')} au{' '}
                 {clickedBooking.end.format('DD/MM/YYYY')} ({pluralize(
                   'jour',
-                  clickedBooking.end.diff(clickedBooking.start, 'days'),
+                  clickedBooking.end.diff(clickedBooking.start, 'days') + 1,
                   true
                 )})
               </p>

@@ -54,7 +54,9 @@ class Month extends Component {
       this.props.firstDayOfWeek !== nextProps.firstDayOfWeek ||
       this.props.selectRange !== nextProps.selectRange ||
       this.props.customClasses !== nextProps.customClasses ||
-      (this.props.selectRange && selectingRange === undefined && nextProps.selectingRange === undefined)
+      (this.props.selectRange &&
+        selectingRange === undefined &&
+        nextProps.selectingRange === undefined)
     ) {
       return true;
     }
@@ -75,7 +77,10 @@ class Month extends Component {
         }
 
         // first time it's called, repaint months in old selectedRange and next selectingRange
-        return (oldRangeStart <= month && month <= oldRangeEnd) || (newRangeStart <= month && month <= newRangeEnd);
+        return (
+          (oldRangeStart <= month && month <= oldRangeEnd) ||
+          (newRangeStart <= month && month <= newRangeEnd)
+        );
       } else if (nextProps.selectingRange === undefined) {
         // last time it's called, repaint months in previous selectingRange
         let oldRangeStart = selectingRangeStart;
@@ -91,12 +96,16 @@ class Month extends Component {
         }
 
         // called on day hovering changed
-        return (oldRangeStart <= month && month <= oldRangeEnd) || (newRangeStart <= month && month <= newRangeEnd);
+        return (
+          (oldRangeStart <= month && month <= oldRangeEnd) ||
+          (newRangeStart <= month && month <= newRangeEnd)
+        );
       }
       // called on day hovering changed
       let oldRangeStart = selectingRangeStart;
       let oldRangeEnd = selectingRangeEnd;
-      if (oldRangeStart > oldRangeEnd) [oldRangeStart, oldRangeEnd] = [oldRangeEnd, oldRangeStart];
+      if (oldRangeStart > oldRangeEnd)
+        [oldRangeStart, oldRangeEnd] = [oldRangeEnd, oldRangeStart];
 
       let newRangeStart = nextProps.selectingRange[0].month();
       let newRangeEnd = nextProps.selectingRange[1].month();
@@ -104,8 +113,14 @@ class Month extends Component {
         [newRangeStart, newRangeEnd] = [newRangeEnd, newRangeStart];
       }
 
-      return (oldRangeStart <= month && month <= oldRangeEnd) || (newRangeStart <= month && month <= newRangeEnd);
-    } else if (this.props.selectedDay.month() === month || nextProps.selectedDay.month() === month) {
+      return (
+        (oldRangeStart <= month && month <= oldRangeEnd) ||
+        (newRangeStart <= month && month <= newRangeEnd)
+      );
+    } else if (
+      this.props.selectedDay.month() === month ||
+      nextProps.selectedDay.month() === month
+    ) {
       // single selectedDay changed: repaint months where selectedDay was and where will be
       return true;
     }
@@ -118,11 +133,11 @@ class Month extends Component {
     dayClicked(day, classes, dayElement);
   }
 
-  dayHovered(day) {
+  dayHovered(day, classes, dayElement) {
     const { selectRange, dayHovered } = this.props;
-    if (selectRange) {
-      dayHovered(day);
-    }
+    //if (selectRange) {
+    dayHovered(day, classes, dayElement);
+    //}
   }
 
   renderMonthDays() {
@@ -232,13 +247,18 @@ class Month extends Component {
           days.push(<td className="week-separator" key={`seperator-${i}`} />);
         }
       }
+
       days.push(
         <Day
           key={`day-${i}`}
           day={day.isValid() ? day : null}
           classes={classes.join(' ')}
-          dayClicked={(d, dayElement) => this.dayClicked(d, classes.join(' '), dayElement)}
-          dayHovered={d => this.dayHovered(d)}
+          dayClicked={(d, dayElement) =>
+            this.dayClicked(d, classes.join(' '), dayElement)
+          }
+          dayHovered={(d, dayElement) =>
+            this.dayHovered(d, classes.join(' '), dayElement)
+          }
         />
       );
     });

@@ -30,7 +30,7 @@ class Day extends Component {
 
   onHover() {
     const { dayHovered, day } = this.props;
-    dayHovered(day);
+    dayHovered(day, this.dayElement);
   }
 
   render() {

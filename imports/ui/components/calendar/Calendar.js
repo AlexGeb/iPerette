@@ -73,21 +73,27 @@ class Calendar extends Component {
     });
   }
 
-  dayHovered(hoveredDay) {
+  dayHovered(hoveredDay, classes, dayElement) {
     if (!hoveredDay) {
       // clicked on prev or next month
       return;
     }
 
     const { selectingRange } = this.state;
+    const { onHoveredDate } = this.props;
 
-    if (selectingRange) {
-      selectingRange[1] = hoveredDay;
-
-      this.setState({
-        selectingRange
-      });
+    if (!selectingRange) {
+      if (onHoveredDate instanceof Function) {
+        onHoveredDate(hoveredDay, classes, dayElement);
+      }
+      return;
     }
+
+    selectingRange[1] = hoveredDay;
+
+    this.setState({
+      selectingRange
+    });
   }
 
   renderDaysOfWeek() {
@@ -129,8 +135,12 @@ class Calendar extends Component {
       <Month
         month={month}
         key={`month-${month}`}
-        dayClicked={(d, classes, dayElement) => this.dayClicked(d, classes, dayElement)}
-        dayHovered={d => this.dayHovered(d)}
+        dayClicked={(d, classes, dayElement) =>
+          this.dayClicked(d, classes, dayElement)
+        }
+        dayHovered={(d, classes, dayElement) =>
+          this.dayHovered(d, classes, dayElement)
+        }
         {...this.props}
         selectingRange={selectingRange}
       />
@@ -138,7 +148,9 @@ class Calendar extends Component {
 
     return (
       <table className="calendar">
-        <thead className="day-headers">{this.props.showDaysOfWeek ? this.renderDaysOfWeek() : null}</thead>
+        <thead className="day-headers">
+          {this.props.showDaysOfWeek ? this.renderDaysOfWeek() : null}
+        </thead>
         <tbody>{months}</tbody>
       </table>
     );
