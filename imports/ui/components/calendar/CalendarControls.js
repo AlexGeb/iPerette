@@ -22,7 +22,7 @@ const CalendarControls = props => {
   if (showTodayButton) {
     todayButton = (
       <div className="control today" onClick={() => goToToday()}>
-        Today
+        Aujourd'hui
       </div>
     );
   }
