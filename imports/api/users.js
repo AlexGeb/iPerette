@@ -53,7 +53,7 @@ Meteor.methods({
       Accounts.sendEnrollmentEmail(userId);
       return;
     } catch (e) {
-      console.log('error trying to send enrollment email', e);
+      console.log('error trying to send enrollment email'); //, e);
       return e;
     }
   },

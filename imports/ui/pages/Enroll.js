@@ -15,10 +15,9 @@ class Enroll extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log('submitted password');
     Accounts.resetPassword(this.token, this.state.password, err => {
       if (err) {
-        console.log('error', err.reason);
+        console.log('error'); //, err.reason);
       } else {
         console.log('ok enroll');
       }

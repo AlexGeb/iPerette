@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Header } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
@@ -21,6 +21,9 @@ class Navbar extends Component {
   render() {
     const { activeItem } = this.state;
     const { match, onLogout, isAdmin } = this.props;
+    if (!this.props.currentUser) {
+      return <Redirect to="/login" />;
+    }
     const { firstname, lastname } = this.props.currentUser;
     return (
       <Menu>

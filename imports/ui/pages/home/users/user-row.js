@@ -13,7 +13,8 @@ class UserRow extends Component {
     return (
       <Table.Row>
         <Table.Cell>
-          {user.firstname} {user.lastname}
+          {user.firstname} {user.lastname}{' '}
+          {Meteor.userId() === user._id && '(moi)'}
         </Table.Cell>
         <Table.Cell>{user.emails[0].address}</Table.Cell>
         <Table.Cell>{bookings.length}</Table.Cell>
@@ -26,7 +27,7 @@ class UserRow extends Component {
       err
     ) {
       if (err) {
-        console.log('error sending email', err);
+        console.log('error sending email'); //, err);
       }
     });
     this.setState({ isOpen: false });

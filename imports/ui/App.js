@@ -43,9 +43,6 @@ const PrivateRoute = ({
 class App extends Component {
   constructor(props) {
     super(props);
-    Accounts.onEnrollmentLink((token, done) => {
-      console.log('clicked enrollment link ', token, done);
-    });
   }
   render() {
     const privateRouteProps = this.props;

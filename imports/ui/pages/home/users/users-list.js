@@ -31,6 +31,6 @@ class UsersList extends Component {
 export default withTracker(() => {
   Meteor.subscribe('users');
   return {
-    users: Meteor.users.find({ _id: { $ne: Meteor.userId() } }).fetch()
+    users: Meteor.users.find({}).fetch()
   };
 })(UsersList);
