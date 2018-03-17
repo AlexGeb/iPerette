@@ -12,21 +12,44 @@ if (Meteor.isServer) {
     return Bookings.find();
   });
 }
-
+bookingOverlaped = ({ from, to }) => {
+  let booking = undefined;
+  Bookings.find({}, { fields: { start: 1, end: 1, name: 1 } })
+    .fetch()
+    .some(b => {
+      const unvalid =
+        b.start.isBetween(from, to, 'day', '[]') ||
+        b.end.isBetween(from, to, 'day', '[]');
+      if (unvalid) {
+        booking = b;
+      }
+      return unvalid;
+    });
+  return booking;
+};
 Meteor.methods({
   'bookings.insert'({ start, end, nbOfGuest }) {
     check(start, Date);
     check(end, Date);
     check(nbOfGuest, Number);
-
-    // Make sure the user is logged in before inserting a task
+    // Make sure the user is logged in before inserting a booking
     if (!this.userId) {
       throw new Meteor.Error('not-authorized');
     }
+    const from = moment(start);
+    const to = moment(end);
+    const booking = bookingOverlaped({ from, to });
+    if (booking) {
+      throw new Meteor.Error(
+        'dates-already-taken',
+        'dates déjà prises par ' + booking.name
+      );
+    } else {
+    }
     const user = Meteor.users.findOne(this.userId);
     Bookings.insert({
-      start: moment(start).format('DD/MM/YYYY'),
-      end: moment(end).format('DD/MM/YYYY'),
+      start: from.format('DD/MM/YYYY'),
+      end: to.format('DD/MM/YYYY'),
       nbOfGuest,
       createdAt: moment().format(),
       booker: this.userId,
