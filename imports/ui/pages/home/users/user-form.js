@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { Header, Form, Button } from 'semantic-ui-react';
+import { Header, Form, Button, Container, Message } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
 
 class UserForm extends Component {
-  state = { firstname: '', lastname: '', email: '' };
+  state = {
+    firstname: '',
+    lastname: '',
+    email: ''
+  };
   handleSubmit = () => {
     const { firstname, lastname, email } = this.state;
     Meteor.call('users.insert', { firstname, lastname, email });
@@ -18,12 +22,17 @@ class UserForm extends Component {
   };
   render() {
     const { firstname, lastname, email } = this.state;
+    const emailValid = !!email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+    const disabled = !emailValid || !firstname || !lastname || !email;
     return (
-      <div>
+      <Container>
         <Header as="h1">Ajouter un nouvel utilisateur</Header>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Group inline>
+        <Form onSubmit={this.handleSubmit} error={!!email && !emailValid}>
+          <Message error content="Email non valide" />
+          <Form.Group widths="equal">
             <Form.Input
+              fluid
+              required
               label="Prénom"
               placeholder="prénom"
               name="firstname"
@@ -31,6 +40,8 @@ class UserForm extends Component {
               onChange={this.handleChange}
             />
             <Form.Input
+              fluid
+              required
               label="Nom"
               placeholder="nom de famille"
               name="lastname"
@@ -39,16 +50,18 @@ class UserForm extends Component {
             />
           </Form.Group>
           <Form.Input
+            inline
+            required
             label="Email"
-            placeholder="adresse-mail@gogol.cool"
+            placeholder="adresse-mail@mail.fr"
             name="email"
             type="email"
             value={email}
             onChange={this.handleChange}
           />
-          <Button content="Enregistrer" />
+          <Button disabled={disabled} content="Enregistrer" />
         </Form>
-      </div>
+      </Container>
     );
   }
 }

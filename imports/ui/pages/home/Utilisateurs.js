@@ -7,10 +7,10 @@ class Utilisateurs extends Component {
   render() {
     return (
       <Grid stackable columns={2} relaxed divided>
-        <Grid.Column width={6}>
+        <Grid.Column mobile={16} tablet={16} computer={6}>
           <UserForm />
         </Grid.Column>
-        <Grid.Column width={10}>
+        <Grid.Column mobile={16} tablet={16} computer={10}>
           <UsersList />
         </Grid.Column>
       </Grid>

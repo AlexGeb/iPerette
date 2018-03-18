@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import { check } from 'meteor/check';
+import { Bookings } from './bookings';
 
 if (Meteor.isServer) {
   // This code only runs on the server
@@ -61,5 +62,6 @@ Meteor.methods({
     check(userId, String);
     checkIfIsAdmin(this.userId);
     Meteor.users.remove(userId);
+    Bookings.remove({ booker: userId });
   }
 });

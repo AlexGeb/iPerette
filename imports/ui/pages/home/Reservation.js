@@ -7,10 +7,10 @@ class Reservation extends Component {
   render() {
     return (
       <Grid stackable columns={2} relaxed divided>
-        <Grid.Column width={6}>
+        <Grid.Column mobile={16} tablet={4} computer={6}>
           <ReservationForm />
         </Grid.Column>
-        <Grid.Column width={10}>
+        <Grid.Column mobile={16} tablet={12} computer={10}>
           <ReservationList />
         </Grid.Column>
       </Grid>
