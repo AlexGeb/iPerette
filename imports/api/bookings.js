@@ -44,10 +44,9 @@ Meteor.methods({
         'dates-already-taken',
         'dates déjà prises par ' + booking.name
       );
-    } else {
     }
     const user = Meteor.users.findOne(this.userId);
-    Bookings.insert({
+    return Bookings.insert({
       start: from.format('DD/MM/YYYY'),
       end: to.format('DD/MM/YYYY'),
       nbOfGuest,
@@ -70,6 +69,6 @@ Meteor.methods({
       // If the task is private, make sure only the owner can delete it
       throw new Meteor.Error('not-authorized');
     }
-    Bookings.remove(bookingId);
+    return Bookings.remove(bookingId);
   }
 });

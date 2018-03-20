@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Segment, Message, Grid, Header } from 'semantic-ui-react';
+import { Form, Segment, Message, Grid, Header, Icon } from 'semantic-ui-react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
@@ -60,8 +60,8 @@ class Login extends React.Component {
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
-              Connexion
+            <Header as="h2" color="blue" textAlign="center">
+              <Icon name="user" /> Connexion
             </Header>
             <Form
               size="large"
@@ -72,6 +72,7 @@ class Login extends React.Component {
             >
               <Segment raised>
                 <Form.Input
+                  iconPosition="left"
                   label="Email"
                   name="email"
                   type="email"
@@ -79,8 +80,10 @@ class Login extends React.Component {
                   value={email}
                   onChange={this.handleChange}
                   autoComplete="email"
+                  icon={<Icon name="at" />}
                 />
                 <Form.Input
+                  iconPosition="left"
                   label="Mot de passe"
                   name="password"
                   type="password"
@@ -88,6 +91,7 @@ class Login extends React.Component {
                   value={password}
                   onChange={this.handleChange}
                   autoComplete="current-password"
+                  icon={<Icon name="key" />}
                 />
                 <Form.Button content="Submit" />
                 <Message error header="Erreur" content={errorMsg} />

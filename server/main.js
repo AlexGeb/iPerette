@@ -5,6 +5,7 @@ import { Email } from 'meteor/email';
 import '../imports/api/bookings.js';
 import '../imports/api/users.js';
 import '../imports/startup/server';
+import { addUser } from '../imports/startup/utils';
 
 Accounts.onCreateUser((options, user) => {
   const letters = 'ABCDE'.split('');
@@ -35,21 +36,3 @@ Meteor.startup(() => {
 
   //Accounts.sendEnrollmentEmail(alexId);
 });
-
-const addUser = ({ email, firstname, lastname, password }, { role }) => {
-  const user = Accounts.findUserByEmail(email);
-  let userId;
-  if (user) {
-    userId = user._id;
-  } else {
-    userId = Accounts.createUser({ email, password });
-  }
-  Meteor.users.update(userId, {
-    $set: {
-      firstname,
-      lastname
-    }
-  });
-  Roles.addUsersToRoles(userId, role, Roles.GLOBAL_GROUP);
-  return userId;
-};

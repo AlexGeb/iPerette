@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Table, Header, Button, Popup, Grid } from 'semantic-ui-react';
+import {
+  Table,
+  Header,
+  Button,
+  Popup,
+  Grid,
+  Icon,
+  Checkbox
+} from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
@@ -7,16 +15,33 @@ import moment from 'moment';
 import { Bookings } from '../../../../api/bookings';
 
 class UserRow extends Component {
-  state = { isOpen: false };
+  state = { isOpen: false, isSelected: false };
+  onCheckboxChange = () => {
+    this.setState({ isSelected: !this.state.isSelected });
+    this.props.onSelected(this.props.user._id, this.state.isSelected);
+  };
   getTheRow = () => {
     const { user, bookings } = this.props;
+    const { isSelected } = this.state;
     return (
       <Table.Row>
+        {/*
+        <Table.Cell collapsing>
+          <Checkbox checked={isSelected} onChange={this.onCheckboxChange} />
+        </Table.Cell>
+        */}
         <Table.Cell>
           {user.firstname} {user.lastname}{' '}
           {Meteor.userId() === user._id && '(moi)'}
         </Table.Cell>
-        <Table.Cell>{user.emails[0].address}</Table.Cell>
+        <Table.Cell>
+          {user.emails[0].address}{' '}
+          {user.emails[0].verified ? (
+            <Icon color="green" name="check circle" />
+          ) : (
+            <Icon color="red" name="remove circle" />
+          )}
+        </Table.Cell>
         <Table.Cell>{bookings.length}</Table.Cell>
         <Table.Cell>{moment(user.createdAt).calendar()}</Table.Cell>
       </Table.Row>
