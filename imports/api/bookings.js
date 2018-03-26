@@ -5,13 +5,18 @@ import { Roles } from 'meteor/alanning:roles';
 import moment from 'moment';
 
 export const Bookings = new Mongo.Collection('bookings');
-
+Bookings.helpers({
+  getBooker() {
+    return Meteor.users.findOne({ _id: this.booker });
+  }
+});
 if (Meteor.isServer) {
   // This code only runs on the server
   Meteor.publish('bookings', function bookingsPublication() {
     return Bookings.find();
   });
 }
+
 bookingOverlaped = ({ from, to }) => {
   let booking = undefined;
   Bookings.find({}, { fields: { start: 1, end: 1, name: 1 } })
@@ -51,10 +56,7 @@ Meteor.methods({
       end: to.format('DD/MM/YYYY'),
       nbOfGuest,
       createdAt: moment().format(),
-      booker: this.userId,
-      color: user.color,
-      emails: user.emails,
-      name: `${user.firstname} ${user.lastname}`
+      booker: this.userId
     });
   },
   'bookings.cancel'(bookingId) {

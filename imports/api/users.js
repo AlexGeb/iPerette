@@ -7,15 +7,19 @@ import { Bookings } from './bookings';
 if (Meteor.isServer) {
   // This code only runs on the server
   Meteor.publish('users', function usersPublication() {
-    const isAdmin = Roles.userIsInRole(
-      this.userId,
-      ['admin'],
-      Roles.GLOBAL_GROUP
+    return Meteor.users.find(
+      {},
+      {
+        fields: {
+          lastname: 1,
+          firstname: 1,
+          emails: 1,
+          createdAt: 1,
+          color: 1,
+          fullname: 1
+        }
+      }
     );
-    const query = isAdmin ? {} : { _id: this.userId };
-    return Meteor.users.find(query, {
-      fields: { lastname: 1, firstname: 1, emails: 1, createdAt: 1 }
-    });
   });
 }
 checkIfIsAdmin = currentUserId => {

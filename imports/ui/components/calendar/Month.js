@@ -4,6 +4,7 @@ import moment from 'moment';
 import { momentObj } from 'react-moment-proptypes';
 import Day from './Day';
 import { range } from './utils';
+import { Popup } from 'semantic-ui-react';
 
 const propTypes = {
   year: PropTypes.number.isRequired,
@@ -62,7 +63,7 @@ class Month extends Component {
     }
 
     // if we get to this point and we are in 'selectRange' mode then it's likely that we have a change in selectingRange
-    if (this.props.selectRange) {
+    if (this.props.selectRange && selectedRange) {
       if (selectingRange === undefined) {
         let oldRangeStart = selectedRange[0].month();
         let oldRangeEnd = selectedRange[1].month();
@@ -178,7 +179,7 @@ class Month extends Component {
       } else if (i > numberOfDays + prevMonthDaysCount) {
         classes.push('next-month');
       } else {
-        if (selectRange) {
+        if (selectRange && selectingRange) {
           // selectingRange is used while user is selecting a range
           // (has clicked on start day, and is hovering end day - but not yet clicked)
           let start = (selectingRange || selectedRange)[0];
@@ -247,22 +248,14 @@ class Month extends Component {
           days.push(<td className="week-separator" key={`seperator-${i}`} />);
         }
       }
-
       days.push(
         <Day
           key={`day-${i}`}
           day={day.isValid() ? day : null}
           classes={classes.join(' ')}
-          dayClicked={(d, dayElement) =>
-            this.dayClicked(d, classes.join(' '), dayElement)
-          }
-          dayHovered={(d, dayElement) =>
-            this.dayHovered(d, classes.join(' '), dayElement)
-          }
         />
       );
     });
-
     return days;
   }
 

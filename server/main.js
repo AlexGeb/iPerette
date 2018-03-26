@@ -33,6 +33,4 @@ Meteor.startup(() => {
   };
   const alexId = addUser(user1, { role: 'admin' });
   addUser(user2, { role: 'user' });
-
-  //Accounts.sendEnrollmentEmail(alexId);
 });

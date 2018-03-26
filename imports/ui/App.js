@@ -8,11 +8,10 @@ import {
 import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Enroll from './pages/Enroll';
-import { Loader } from 'semantic-ui-react';
+import Loading from './components/Loading';
 
 const PrivateRoute = ({
   loggingIn,
@@ -24,7 +23,7 @@ const PrivateRoute = ({
     {...rest}
     render={props => {
       if (loggingIn) {
-        return <Loader active>Loading</Loader>;
+        return <Loading />;
       }
       return authenticated ? (
         <Component {...props} />

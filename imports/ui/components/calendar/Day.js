@@ -1,56 +1,83 @@
 import React, { Component } from 'react';
+import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import { momentObj } from 'react-moment-proptypes';
-import ReactDOM from 'react-dom';
+import { Popup, Header } from 'semantic-ui-react';
+import { Bookings } from '../../../api/bookings';
+import moment from 'moment';
+import pluralize from 'pluralize';
 
 const propTypes = {
   classes: PropTypes.string,
-  dayClicked: PropTypes.func.isRequired,
-  dayHovered: PropTypes.func.isRequired,
+  booking: PropTypes.object,
   day: momentObj
 };
 
 const defaultProps = {
   classes: '',
-  day: null
+  day: null,
+  booking: null
 };
 
 class Day extends Component {
   constructor(props) {
     super(props);
-
-    this.onClick = this.onClick.bind(this);
-    this.onHover = this.onHover.bind(this);
-  }
-
-  onClick() {
-    const { dayClicked, day } = this.props;
-    dayClicked(day, this.dayElement); // this.dayElement = ref to the <td> element, for further action on it
-  }
-
-  onHover() {
-    const { dayHovered, day } = this.props;
-    dayHovered(day, this.dayElement);
   }
 
   render() {
-    const { classes, day } = this.props;
-    return (
-      <td
-        onClick={this.onClick}
-        onMouseEnter={this.onHover}
-        className={classes}
-        ref={dayElement => {
-          this.dayElement = dayElement;
-        }}
-      >
+    const { classes, day, booking } = this.props;
+    const theCell = (
+      <td className={classes}>
         <span className="day-number">{day === null ? '' : day.date()}</span>
       </td>
     );
+
+    if (booking) {
+      return (
+        <Popup trigger={theCell} on={['click', 'hover']} wide>
+          <Header>{booking.user.fullname}</Header>
+          <p>
+            Du {booking.start} au {booking.end} ({pluralize(
+              'jour',
+              booking.numOfDays,
+              true
+            )})
+          </p>
+        </Popup>
+      );
+    }
+
+    return theCell;
   }
 }
 
 Day.propTypes = propTypes;
 Day.defaultProps = defaultProps;
 
-export default Day;
+export default withTracker(ownProps => {
+  if (ownProps) {
+    const { classes } = ownProps;
+    if (classes && classes.indexOf('booking') !== -1) {
+      const idLength = 17,
+        start = ownProps.classes.indexOf('booking-') + 8;
+      const booking_id = classes.substring(start, start + idLength);
+      Meteor.subscribe('bookings');
+      const booking = Bookings.findOne(
+        { _id: booking_id },
+        { fields: { start: 1, end: 1, booker: 1 } }
+      );
+      if (booking) {
+        booking.numOfDays =
+          moment(booking.end, 'DD/MM/YYYY').diff(
+            moment(booking.start, 'DD/MM/YYYY'),
+            'days'
+          ) + 1;
+        booking.user = booking.getBooker();
+        return {
+          booking
+        };
+      }
+    }
+  }
+  return {};
+})(Day);

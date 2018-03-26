@@ -4,11 +4,19 @@ import Navbar from '../components/Navbar';
 import { Container } from 'semantic-ui-react';
 import Calendrier from './home/Calendrier';
 import Reservation from './home/Reservation';
-import Utilisateurs from './home/Utilisateurs';
+//import Utilisateurs from './home/Utilisateurs';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
 import { Bookings } from '../../api/bookings';
+import Loadable from 'react-loadable';
+import { Loader } from 'semantic-ui-react';
+import Loading from '../components/Loading';
+
+const LoadableUtilisateurs = Loadable({
+  loader: () => import('./home/Utilisateurs'),
+  loading: Loading
+});
 
 const AdminRoute = ({ isAdmin, component: Component, ...rest }) => (
   <Route
@@ -60,7 +68,7 @@ class Home extends Component {
             <AdminRoute
               isAdmin={this.props.isAdmin}
               path={`${match.url}/utilisateurs`}
-              component={Utilisateurs}
+              component={LoadableUtilisateurs}
             />
             <Redirect to={`${match.url}/calendrier`} />
           </Switch>

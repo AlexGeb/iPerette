@@ -29,7 +29,7 @@ class ReservationList extends Component {
           <Table.Cell>{this.formatDate(b.end)}</Table.Cell>
           <Table.Cell>{b.nbOfGuest}</Table.Cell>
           <Table.Cell>{moment(b.createdAt).calendar()}</Table.Cell>
-          {isAdmin && <Table.Cell>{b.name}</Table.Cell>}
+          {isAdmin && <Table.Cell>{b.getBooker().fullname}</Table.Cell>}
           <Table.Cell>
             <Button color="red" onClick={() => this.handleAnnulation(b._id)}>
               Annuler

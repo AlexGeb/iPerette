@@ -9,10 +9,12 @@ export const addUser = ({ email, firstname, lastname, password }, { role }) => {
   } else {
     userId = Accounts.createUser({ email, password });
   }
+  const fullname = `${firstname} ${lastname}`;
   Meteor.users.update(userId, {
     $set: {
       firstname,
-      lastname
+      lastname,
+      fullname
     }
   });
   Roles.addUsersToRoles(userId, role, Roles.GLOBAL_GROUP);

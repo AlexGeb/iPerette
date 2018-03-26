@@ -47,7 +47,7 @@ class Calendar extends Component {
 
     let { selectingRange } = this.state;
     const { selectRange, onPickRange, onPickDate } = this.props;
-
+    console.log('dayClicked', selectRange, onPickRange);
     if (!selectRange) {
       if (onPickDate instanceof Function) {
         onPickDate(date, classes, dayElement);
@@ -57,6 +57,7 @@ class Calendar extends Component {
 
     if (!selectingRange) {
       selectingRange = [date, date];
+      console.log('new selection : ', selectingRange);
     } else {
       if (onPickRange instanceof Function) {
         if (selectingRange[0] > date) {
@@ -143,9 +144,9 @@ class Calendar extends Component {
         }
         {...this.props}
         selectingRange={selectingRange}
+        selectedRange={selectingRange}
       />
     ));
-
     return (
       <table className="calendar">
         <thead className="day-headers">
