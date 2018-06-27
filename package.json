@@ -3,11 +3,12 @@
   "private": true,
   "scripts": {
     "start": "MAIL_URL='smtp://postmaster%40sandbox9ed1c58ec2a04dc180ae4ead677b574f.mailgun.org:802c6f9d701ad3162bfe42129ca51a56@smtp.mailgun.org:587' MONGO_URL='mongodb://localhost:27017/meteorDb' meteor",
-    "test": "TEST_WATCH=1 meteor test --driver-package cultofcoders:mocha --port=5005"
+    "test": "TEST_WATCH=1 meteor test --driver-package cultofcoders:mocha --port=5005",
+    "deploy": "meteor-now --public -e MONGO_URL=@laperette-mongodb-url -e ROOT_URL=https://iperette.now.sh && now alias iperette"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.51",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^2.0.1",
     "meteor-node-stubs": "^0.4.1",
     "moment": "^2.21.0",
     "pluralize": "^7.0.0",
@@ -21,6 +22,7 @@
     "semantic-ui-react": "^0.78.3"
   },
   "devDependencies": {
-    "chai": "^4.1.2"
+    "chai": "^4.1.2",
+    "meteor-now": "^0.6.1"
   }
 }
