@@ -6,9 +6,9 @@
     "test": "TEST_WATCH=1 meteor test --driver-package cultofcoders:mocha --port=5005"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.36",
+    "@babel/runtime": "^7.0.0-beta.51",
     "bcrypt": "^1.0.3",
-    "meteor-node-stubs": "^0.3.2",
+    "meteor-node-stubs": "^0.4.1",
     "moment": "^2.21.0",
     "pluralize": "^7.0.0",
     "react": "^16.2.0",

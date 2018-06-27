@@ -20,6 +20,7 @@ class UserRow extends Component {
     this.setState({ isSelected: !this.state.isSelected });
     this.props.onSelected(this.props.user._id, this.state.isSelected);
   };
+
   getTheRow = () => {
     const { user, bookings } = this.props;
     const { isSelected } = this.state;
@@ -47,6 +48,7 @@ class UserRow extends Component {
       </Table.Row>
     );
   };
+
   sendEnrollment = () => {
     Meteor.call('users.sendEnrollmentEmail', this.props.user._id, function(
       err

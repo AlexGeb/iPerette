@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Table, Header, Button, Confirm } from 'semantic-ui-react';
+import {
+  Table,
+  Header,
+  Button,
+  Confirm,
+  Icon,
+  Grid,
+  Container
+} from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import UserRow from './user-row';
@@ -22,10 +30,11 @@ class UsersList extends Component {
     ));
   };
   render() {
+    const { userShow, showAddUser } = this.props;
     return (
-      <div>
+      <Container>
         <Header as="h1" content="Gestion des utilisateurs" />
-        <Table celled selectable>
+        <Table celled selectable container="true">
           <Table.Header>
             <Table.Row>
               {/*<Table.HeaderCell />*/}
@@ -37,7 +46,7 @@ class UsersList extends Component {
           </Table.Header>
           <Table.Body>{this.renderRows()}</Table.Body>
         </Table>
-      </div>
+      </Container>
     );
   }
 }

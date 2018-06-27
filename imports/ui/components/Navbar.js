@@ -60,7 +60,7 @@ class Navbar extends Component {
           </Menu.Item>
         )}
         <Menu.Menu position="right">
-          <Menu.Item>
+          <Menu.Item as={Link} to={`${match.url}/profil`}>
             <Header as="h4">
               {firstname} {lastname}
             </Header>

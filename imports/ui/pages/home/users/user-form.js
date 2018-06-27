@@ -48,17 +48,18 @@ class UserForm extends Component {
               value={lastname}
               onChange={this.handleChange}
             />
+            <Form.Input
+              fluid
+              required
+              label="Email"
+              placeholder="adresse-mail@mail.fr"
+              name="email"
+              type="email"
+              value={email}
+              onChange={this.handleChange}
+            />
           </Form.Group>
-          <Form.Input
-            inline
-            required
-            label="Email"
-            placeholder="adresse-mail@mail.fr"
-            name="email"
-            type="email"
-            value={email}
-            onChange={this.handleChange}
-          />
+
           <Button disabled={disabled} content="Enregistrer" />
         </Form>
       </Container>

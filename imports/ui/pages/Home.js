@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import { Container } from 'semantic-ui-react';
-import Calendrier from './home/Calendrier';
-import Reservation from './home/Reservation';
-//import Utilisateurs from './home/Utilisateurs';
+import Loadable from 'react-loadable';
+import { Container, Loader } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
-import { Bookings } from '../../api/bookings';
-import Loadable from 'react-loadable';
-import { Loader } from 'semantic-ui-react';
+
+import Navbar from '../components/Navbar';
+import Calendrier from './home/Calendrier';
+import Reservation from './home/Reservation';
+import Profil from './home/Profil';
 import Loading from '../components/Loading';
 
 const LoadableUtilisateurs = Loadable({
@@ -65,6 +64,7 @@ class Home extends Component {
           <Switch>
             <Route path={`${match.url}/calendrier`} component={Calendrier} />
             <Route path={`${match.url}/reservation`} component={Reservation} />
+            <Route path={`${match.url}/profil`} component={Profil} />
             <AdminRoute
               isAdmin={this.props.isAdmin}
               path={`${match.url}/utilisateurs`}
